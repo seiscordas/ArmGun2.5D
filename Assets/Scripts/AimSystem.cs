@@ -75,9 +75,9 @@ public class AimSystem : MonoBehaviour
             angle = _headClampUp;
         if (angle < _headClampDown)
             angle = _headClampDown;
-        _head.transform.eulerAngles = new Vector3(angle, _head.transform.eulerAngles.y, _head.transform.eulerAngles.z);
+        _head.transform.eulerAngles = new Vector3(-angle, _head.transform.eulerAngles.y, _head.transform.eulerAngles.z);
         DebugAny = _head.transform.eulerAngles.ToString();
-        FixHeadPositionAim(angle);
+        //FixHeadPositionAim(angle);
     }
     private void ResetHeadPosition()
     {

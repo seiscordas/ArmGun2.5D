@@ -5,6 +5,9 @@ using UnityEngine;
 
 public class Player3DController : MonoBehaviour
 {
+    private Animator _animator;
+    public bool isGrounded;
+    [SerializeField] private Transform _groundCheck;
     [SerializeField] private GameObject _player;
     [SerializeField] private Transform _aim;
     [SerializeField] private float _flipAngle = -90f;// serializedfieldo só para debug
@@ -31,12 +34,14 @@ public class Player3DController : MonoBehaviour
     }
     void Start()
     {
-
+        _animator = GetComponent<Animator>();
         _rigidbody = GetComponent<Rigidbody>();
     }
 
     void Update()
     {
+        isGrounded = Physics.Linecast(transform.position, _groundCheck.position, 1 << LayerMask.NameToLayer("Ground"));
+        _animator.SetBool("isGrounded", isGrounded);
         if (Input.GetButtonDown("Fire2"))
         {
             IsActiveAim = !IsActiveAim;
@@ -74,12 +79,12 @@ public class Player3DController : MonoBehaviour
             Flip(_flipSpeed);
         if (IsFlipToRight())
             Flip(-_flipSpeed);
-        if (!_isFliping)
-            Walk(touchRun);
+        if (!_isFliping && isGrounded && _flipDirection != 0f)
+            Walk();
     }
-    private void Walk(float moveX)
+    private void Walk()
     {
-        _rigidbody.velocity = new Vector2(moveX * _walkSpeed, _rigidbody.velocity.y);
+        _animator.SetFloat("H_Walk", touchRun);
     }
     private void Flip(float speed)
     {
@@ -94,6 +99,7 @@ public class Player3DController : MonoBehaviour
     }
 }
 //TODO:
+//MUDA O PLAYER PRA UM HUMANO NORMAL DO SITE MIXANO
 //player não está virarndo usando as setas quando IsActiveAim == false
 //animação do player andando
 //pular
