@@ -10,14 +10,16 @@ public class Player3DController : MonoBehaviour
     [SerializeField] private Transform _groundCheck;
     [SerializeField] private GameObject _player;
     [SerializeField] private Transform _aim;
-    [SerializeField] private float _flipAngle = -90f;// serializedfieldo só para debug
+    [SerializeField] private float _flipAngle = -90f;
     [SerializeField] private float _flipSpeed = 30f;
     [SerializeField] private float _walkSpeed = 10f;
-    AimSystem aimSystem = new AimSystem();
+    private AimSystem aimSystem;
+    [SerializeField] private LaserSystem laserSystem;
     private Rigidbody _rigidbody;
-    public bool facingRight = true;
-    public bool _isFliping = false;
-    public float touchRun = 0;//public para debug
+    public bool _facingRight = true;//public para debug
+    public bool _isFliping = false;//public para debug
+    public float _horizontalAxis = 0;//public para debug
+    public float _verticallAxis = 0;//public para debug
     private float _aimPositionX;
     [SerializeField] private bool IsActiveAim = false;// serializedfieldo só para debug
 
@@ -31,6 +33,7 @@ public class Player3DController : MonoBehaviour
     {
         aimSystem = _player.GetComponent(typeof(AimSystem)) as AimSystem;
         aimSystem.Player = _player;
+        laserSystem.Player = this;
     }
     void Start()
     {
@@ -45,33 +48,17 @@ public class Player3DController : MonoBehaviour
         if (Input.GetButtonDown("Fire2"))
         {
             IsActiveAim = !IsActiveAim;
+            _animator.SetBool("isAim", IsActiveAim);
         }
         debugAimPosition = _aim.position - _player.transform.position;//debug
         _aimPositionX = _aim.position.x - _player.transform.position.x;
-        touchRun = Input.GetAxisRaw("Horizontal");
+        _horizontalAxis = Input.GetAxisRaw("Horizontal");
+        _verticallAxis = Input.GetAxisRaw("Vertical");
+        if (Input.GetButtonDown("Jump"))
+        {
+            StartCoroutine(JumpingUp());
+        }
 
-    }
-    private bool IsFlipToRight()
-    {
-        if (touchRun != 0)
-            _flipDirection = touchRun;
-        if (((IsActiveAim && _aimPositionX > 0) || (!IsActiveAim && _flipDirection > 0)) && _flipAngle > -90f)
-        {
-            _isFliping = true;
-            return true;
-        }
-        return false;
-    }
-    private bool IsFlipToLeft()
-    {
-        if (touchRun != 0)
-            _flipDirection = touchRun;
-        if (((IsActiveAim && _aimPositionX < 0) || (!IsActiveAim && _flipDirection < 0)) && _flipAngle < 90f)
-        {
-            _isFliping = true;
-            return true;
-        }
-        return false;
     }
     private void FixedUpdate()
     {
@@ -81,26 +68,62 @@ public class Player3DController : MonoBehaviour
             Flip(-_flipSpeed);
         if (!_isFliping && isGrounded && _flipDirection != 0f)
             Walk();
+
+    }
+    private bool IsFlipToRight()
+    {
+        if (_horizontalAxis != 0)
+            _flipDirection = _horizontalAxis;
+        if (((IsActiveAim && _aimPositionX > 0) || (!IsActiveAim && _flipDirection > 0)) && _flipAngle > -90f)
+        {
+            _isFliping = true;
+            return true;
+        }
+        return false;
+    }
+    private bool IsFlipToLeft()
+    {
+        if (_horizontalAxis != 0)
+            _flipDirection = _horizontalAxis;
+        if (((IsActiveAim && _aimPositionX < 0) || (!IsActiveAim && _flipDirection < 0)) && _flipAngle < 90f)
+        {
+            _isFliping = true;
+            return true;
+        }
+        return false;
+    }
+    private IEnumerator JumpingUp()
+    {
+        _animator.SetBool("Jump", true);
+        yield return new WaitForSeconds(0.1f);
+        _animator.SetBool("Jump", false);
+
     }
     private void Walk()
     {
-        _animator.SetFloat("H_Walk", touchRun);
+        _animator.SetFloat("H_Move", _horizontalAxis);
     }
     private void Flip(float speed)
     {
         _flipAngle += speed;
         _player.transform.Rotate(0, speed, 0);
-        facingRight = (_flipAngle == -90f);
+        _facingRight = (_flipAngle == -90f);
         if (_flipAngle == -90f || _flipAngle == 90f)
         {
             _flipDirection = 0;
             _isFliping = false;
         }
+        //_rigidbody.MoveRotation(Quaternion.Euler(new Vector3(0, 90 * Mathf.Sign(_aim.position.x - transform.position.x), 0)));
     }
 }
 //TODO:
-//MUDA O PLAYER PRA UM HUMANO NORMAL DO SITE MIXANO
-//player não está virarndo usando as setas quando IsActiveAim == false
-//animação do player andando
-//pular
-//mirar com o braço
+//ver sistema de movimento com cardano
+//corrigir pulo
+//pular erro conhecido player fica parado no ar
+//mirar com a arma
+//agachar
+//andar para traz quando estiver mirando
+//Procurar animações melhores
+//Colocar clamp na mira com o braço pq fica estranho quando gira de um lada para o outro se a mira estiver muito proximo a cabeça
+//CORRIGIR RESOLUÇÃO DO GAME PLAY
+//problema conhecido: player para no meio do Flip se clicar com direto, corrigir fazendo condição a mira só é ativada ou desativada se IsFliping == false

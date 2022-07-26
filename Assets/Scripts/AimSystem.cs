@@ -1,98 +1,65 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Animations.Rigging;
 
 public class AimSystem : MonoBehaviour
 {
     [SerializeField] private Transform _aim;
+    public Transform Aim { get => _aim; }
     [SerializeField] private bool _isActiveAim = false;
     public bool IsActiveAim { get => _isActiveAim; }
     [SerializeField] private GameObject _player;
     public GameObject Player { get => _player; set => _player = value; }
-    private RigBuilder _rigBuilder;
     [Header("Head Settings")]
-    [SerializeField] private GameObject _head;
+    [SerializeField] private Transform _head;
     [SerializeField] private float _headClampUp;
     [SerializeField] private float _headClampDown;
     [SerializeField] private float _headOffset;
-    [Header("Spine Settings")]
-    [SerializeField] private GameObject _rigSpine;
-    [SerializeField] private float _spineClampUp;
-    [SerializeField] private float _spineClampDown;
-    [SerializeField] private float _spineOffset;
-    [Space(10)]
+    [Header("Arm Gun Settings")]
+    [SerializeField] private Transform _armGun;
+    [SerializeField] private float _armGunOffset;
+    [SerializeField] private float _armGunClampDown;
+    [Header("Gun Settings")]
+    [SerializeField] private Transform _gun;
+    [SerializeField] private float _gunOffset;
 
-
-    //debug inspector
-    [Header("Debug Inspector")]
-    public float DebugAngulo;
-    public float DebugClamp;
-    public Vector2 DebugAimPosition;
-    public string DebugAny;
-
-    void Start()
+    private Camera _camera;
+    private float dinamicOffset;
+    private void Start()
     {
-        //_rigBuilder = Player.GetComponent(typeof(RigBuilder)) as RigBuilder;
+        _camera = Camera.main;
+        dinamicOffset = _armGunOffset;
     }
-
     void Update()
     {
-        if (Input.GetButtonDown("Fire1"))
-        {
-            if (!_isActiveAim)
-            {
-
-                //Fire();
-            }
-            else
-            {
-
-                //FireAim();
-            }
-        }
-
         if (Input.GetButtonDown("Fire2"))
         {
             _isActiveAim = !_isActiveAim;
             _aim.gameObject.SetActive(_isActiveAim);
         }
-
-        if (!_isActiveAim)
+        if (!_isActiveAim && IsFliping() == false)
             return;
-        AimFollow();
+        AimGun();
         HeadAimFollow();
-        //SpineBend();
-
+        ArmGunAimFollow();
+        GunAimFollow();
     }
-    private void HeadAimFollow()
+    private void ArmGunAimFollow()
     {
-        if (IsFliping())
-            return;
-        float angle = Angle(_aim.position, _head.transform.position) - _headOffset;
-        DebugAngulo = angle;
-        if (angle > _headClampUp)
-            angle = _headClampUp;
-        if (angle < _headClampDown)
-            angle = _headClampDown;
-        _head.transform.eulerAngles = new Vector3(-angle, _head.transform.eulerAngles.y, _head.transform.eulerAngles.z);
-        DebugAny = _head.transform.eulerAngles.ToString();
-        //FixHeadPositionAim(angle);
+        float angle = Angle(_aim.position, _armGun.position) - _armGunOffset;
+        angle = Mathf.Abs(angle);
+        if (angle > 120 && angle < 180)
+        {
+            dinamicOffset = angle;
+        }
+        float dinamicAngleOffset = Angle(_aim.position, _armGun.position) - dinamicOffset;
+        if (dinamicAngleOffset < _armGunClampDown)
+            dinamicAngleOffset = _armGunClampDown;
+        _armGun.transform.eulerAngles = new Vector3(_armGun.eulerAngles.x, _armGun.eulerAngles.y, dinamicAngleOffset);
     }
-    private void ResetHeadPosition()
+    private void GunAimFollow()
     {
-        //_head.transform.eulerAngles = new Vector3(-39.534f, -3.806f, -18.956f);
-    }
-    private void FixHeadPositionAim(float angle)
-    {
-        if (angle != _head.transform.eulerAngles.x)
-            _head.transform.eulerAngles = new Vector3(angle, _head.transform.eulerAngles.y, _head.transform.eulerAngles.z);
-    }
-    private void SpineBend(float clampUp, float clampDown, float offset)
-    {
-        float angle = Angle(_aim.position, _head.transform.position);
-        angle = Mathf.Clamp(angle, clampUp, clampDown);
-        _rigSpine.transform.eulerAngles = new Vector3(angle - offset, _head.transform.eulerAngles.y, _head.transform.eulerAngles.z);
+        float angle = Angle(_aim.position, _gun.position) - _gunOffset;
+        float teste = angle * Mathf.Deg2Rad;
+        _gun.transform.eulerAngles = new Vector3(_gun.eulerAngles.x, _gun.eulerAngles.y, angle);
     }
     private float Angle(Vector3 point1, Vector3 point2)
     {
@@ -103,22 +70,37 @@ public class AimSystem : MonoBehaviour
         float angle = Mathf.Atan2(_points.y, _points.x) * Mathf.Rad2Deg;
         return angle;
     }
-    private void AimFollow()
+    private void AimGun()
     {
-        Vector2 aim = MousePosition;
-        _aim.transform.position = new Vector2(aim.x, aim.y);
-        DebugAimPosition = _aim.transform.position = new Vector2(aim.x, aim.y);///DEBUG INSPECTOR
+        //TODO: TIRAR NFREEZE É SÓMENTE PARA DEBUG
+        bool nfreeze = true;
+        if (Input.GetKey(KeyCode.F))
+            nfreeze = !nfreeze;
+        if (!nfreeze)
+        {
+        }
+        _aim.position = new Vector3(MousePosition.x, MousePosition.y, -0.19f);
     }
-    private Vector2 MousePosition
+    private void HeadAimFollow()
     {
-        get { return Camera.main.ScreenToWorldPoint(Input.mousePosition); }
+        float angle = Angle(_aim.position, _head.transform.position) - _headOffset;
+        if (angle > _headClampUp)
+            angle = _headClampUp;
+        if (angle < _headClampDown)
+            angle = _headClampDown;
+        _head.transform.eulerAngles = new Vector3(-angle, _head.transform.eulerAngles.y, _head.transform.eulerAngles.z);
+    }
+    private Vector3 MousePosition
+    {
+        get { return _camera.ScreenToWorldPoint(Input.mousePosition); }
     }
     private bool IsFacingRight()
     {
-        return _player.GetComponent<Player3DController>().facingRight;
+        return _player.GetComponent<Player3DController>()._facingRight;
     }
     private bool IsFliping()
     {
         return _player.GetComponent<Player3DController>()._isFliping;
     }
 }
+//TODO
