@@ -43,7 +43,8 @@ public class Player3DController : MonoBehaviour
 
     void Update()
     {
-        isGrounded = Physics.Linecast(transform.position, _groundCheck.position, 1 << LayerMask.NameToLayer("Ground"));
+        IsGrounded();
+
         _animator.SetBool("isGrounded", isGrounded);
         if (Input.GetButtonDown("Fire2"))
         {
@@ -56,18 +57,38 @@ public class Player3DController : MonoBehaviour
         _verticallAxis = Input.GetAxisRaw("Vertical");
         if (Input.GetButtonDown("Jump"))
         {
-            StartCoroutine(JumpingUp());
+            //StartCoroutine(JumpingUp());
         }
 
     }
+
+    private void IsGrounded()
+    {
+        RaycastHit raycastHit;
+
+        Color rayColor;
+        if (Physics.Raycast(transform.position, Vector3.down, out raycastHit, 0.5f))
+        {
+            isGrounded = false;
+            rayColor = Color.green;
+        }
+        else
+        {
+            isGrounded = true;
+            rayColor = Color.red;
+        }
+        Debug.DrawRay(transform.position, raycastHit.point);
+    }
+
+
     private void FixedUpdate()
     {
-        if (IsFlipToLeft())
-            Flip(_flipSpeed);
-        if (IsFlipToRight())
-            Flip(-_flipSpeed);
-        if (!_isFliping && isGrounded && _flipDirection != 0f)
-            Walk();
+        //if (IsFlipToLeft())
+        //    Flip(_flipSpeed);
+        //if (IsFlipToRight())
+        //    Flip(-_flipSpeed);
+        //if (!_isFliping && isGrounded && _flipDirection != 0f)
+        //    Walk();
 
     }
     private bool IsFlipToRight()
@@ -95,9 +116,8 @@ public class Player3DController : MonoBehaviour
     private IEnumerator JumpingUp()
     {
         _animator.SetBool("Jump", true);
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(0.5f);
         _animator.SetBool("Jump", false);
-
     }
     private void Walk()
     {
