@@ -61,23 +61,21 @@ public class Player3DController : MonoBehaviour
         }
 
     }
-
+    [SerializeField] private float raycastLine = 0.1f;
     private void IsGrounded()
     {
         RaycastHit raycastHit;
-
         Color rayColor;
-        if (Physics.Raycast(transform.position, Vector3.down, out raycastHit, 0.5f))
+        if (Physics.Raycast(transform.position, Vector3.down, out raycastHit, raycastLine))
         {
             isGrounded = false;
             rayColor = Color.green;
+            Debug.DrawRay(transform.position, raycastHit.point, rayColor);
         }
         else
         {
             isGrounded = true;
-            rayColor = Color.red;
         }
-        Debug.DrawRay(transform.position, raycastHit.point);
     }
 
 
@@ -137,10 +135,9 @@ public class Player3DController : MonoBehaviour
     }
 }
 //TODO:
-//ver sistema de movimento com cardano
+//adiniconar GroundDetection com base no video -> https://www.youtube.com/watch?v=vWPEjo-EkPg&list=PLWYGofN_jX5BupV2xLjU1HUvujl_yDIN6&index=18
+//quando anda para esquerda parece estar meio virado para frete
 //corrigir pulo
-//pular erro conhecido player fica parado no ar
-//mirar com a arma
 //agachar
 //andar para traz quando estiver mirando
 //Procurar animações melhores
