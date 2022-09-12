@@ -1,7 +1,7 @@
 fileFormatVersion: 2
 guid: 87ae9d2aa1468b74d977dd74b2c54202
 ModelImporter:
-  serializedVersion: 21202
+  serializedVersion: 21300
   internalIDToNameTable:
   - first:
       74: -203655887218126122
@@ -42,7 +42,7 @@ ModelImporter:
       firstFrame: 0
       lastFrame: 16
       wrapMode: 0
-      orientationOffsetY: 0
+      orientationOffsetY: 25
       level: 0
       cycleOffset: 0
       loop: 0
@@ -51,7 +51,7 @@ ModelImporter:
       loopBlend: 0
       loopBlendOrientation: 1
       loopBlendPositionY: 1
-      loopBlendPositionXZ: 1
+      loopBlendPositionXZ: 0
       keepOriginalOrientation: 1
       keepOriginalPositionY: 1
       keepOriginalPositionXZ: 1
@@ -907,6 +907,7 @@ ModelImporter:
   humanoidOversampling: 1
   avatarSetup: 1
   addHumanoidExtraRootOnlyWhenUsingAvatar: 1
+  remapMaterialsIfMaterialImportModeIsNone: 1
   additionalBone: 0
   userData: 
   assetBundleName: 

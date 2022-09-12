@@ -12,29 +12,24 @@ namespace kl
         }
         public override void UpdateAbility(CharacterState characterState, Animator animator, AnimatorStateInfo stateInfo)
         {
+
             CharacterControl characterControl = characterState.GetCharacterControl(animator);
-            if (characterControl.Turn)
-            {
+            if (characterControl.Fliping)
                 return;
+
+            if (characterControl.Jump)
+            {
+                animator.SetBool(TransitionParameter.Jump.ToString(), value: true);
+            }
+            if (characterControl.MoveBackward)
+            {
+                animator.SetBool(TransitionParameter.MoveBackward.ToString(), value: true);
             }
             if (characterControl.MoveRight || characterControl.MoveLeft)
             {
-                animator.SetBool(TransitionParameter.Move.ToString(), true);
+                animator.SetBool(TransitionParameter.Move.ToString(), value: true);
             }
-            if (characterControl.TurnBackByRight)
-            {
-                animator.SetBool(TransitionParameter.TurnBackByRight.ToString(), true);
-            }
-            if (characterControl.TurnBackByLeft)
-            {
-                animator.SetBool(TransitionParameter.TurnBackByLeft.ToString(), true);
-            }
-            if (characterControl.Jump)
-            {
-                animator.SetBool(TransitionParameter.Jump.ToString(), true);
-            }
-            else
-                animator.SetBool(TransitionParameter.Jump.ToString(), false);
+            VirtualInputManager.Instance.Grounded = true;
         }
         public override void OnExit(CharacterState characterState, Animator animator, AnimatorStateInfo stateInfo)
         {

@@ -18,14 +18,7 @@ namespace kl
             if (stateInfo.normalizedTime >= CheckTime)
             {
                 CharacterControl characterControl = characterState.GetCharacterControl(animator);
-                if (IsGrounded(characterControl))
-                {
-                    animator.SetBool(TransitionParameter.Grounded.ToString(), true);
-                }
-                else
-                {
-                    animator.SetBool(TransitionParameter.Grounded.ToString(), false);
-                }
+                animator.SetBool(TransitionParameter.Grounded.ToString(), IsGrounded(characterControl));
             }
         }
         public override void OnExit(CharacterState characterState, Animator animator, AnimatorStateInfo stateInfo)
@@ -38,13 +31,15 @@ namespace kl
             {
                 return true;
             }
-            foreach (GameObject item in characterControl.BottomSpheres)
+            if (characterControl.Rigidbody.velocity.y < 0f)
             {
-                Debug.DrawRay(item.transform.position, Vector3.down * 0.7f, Color.yellow);
-                RaycastHit raycastHit;
-                if (Physics.Raycast(item.transform.position, Vector3.down, out raycastHit, Distance))
+                foreach (GameObject item in characterControl.BottomSpheres)
                 {
-                    return true;
+                    Debug.DrawRay(item.transform.position, Vector3.down * Distance, Color.yellow);
+                    if (Physics.Raycast(item.transform.position, Vector3.down, out RaycastHit raycastHit, Distance))
+                    {
+                        return true;
+                    }
                 }
             }
             return false;

@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace kl
@@ -15,46 +13,14 @@ namespace kl
 
         private void Update()
         {
-            if (VirtualInputManager.Instance.MoveRight)
-            {
-                characterControl.MoveRight = true;
-            }
-            else
-            {
-                characterControl.MoveRight = false;
-            }
-            if (VirtualInputManager.Instance.MoveLeft)
-            {
-                characterControl.MoveLeft = true;
-            }
-            else
-            {
-                characterControl.MoveLeft = false;
-            }
-            if (VirtualInputManager.Instance.TurnBackByRight)
-            {
-                characterControl.TurnBackByRight = true;
-            }
-            else
-            {
-                characterControl.TurnBackByRight = false;
-            }
-            if (VirtualInputManager.Instance.TurnBackByLeft)
-            {
-                characterControl.TurnBackByLeft = true;
-            }
-            else
-            {
-                characterControl.TurnBackByLeft = false;
-            }
-            if (VirtualInputManager.Instance.Jump)
-            {
-                characterControl.Jump = true;
-            }
-            else
-            {
-                characterControl.Jump = false;
-            }
+            characterControl.MoveRight = VirtualInputManager.Instance.MoveRight;
+            characterControl.MoveLeft = VirtualInputManager.Instance.MoveLeft;
+            characterControl.FlipToRight = VirtualInputManager.Instance.FlipToRight;
+            characterControl.FlipToLeft = VirtualInputManager.Instance.FlipToLeft;
+            characterControl.Jump = VirtualInputManager.Instance.Jump;
+            characterControl.ActiveAim = VirtualInputManager.Instance.ActiveAim;
+            characterControl.Grounded = VirtualInputManager.Instance.Grounded;
+            characterControl.MoveBackward = VirtualInputManager.Instance.MoveBackward;
         }
     }
 }

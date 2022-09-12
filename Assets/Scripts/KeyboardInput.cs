@@ -6,32 +6,51 @@ namespace kl
     {
         [SerializeField] private CharacterControl characterControl;
         void Update()
-        {
-            if (Input.GetAxisRaw("Horizontal") == 0 || characterControl.Turn)
+        {            
+            if (Input.GetAxisRaw("Horizontal") == 0 || characterControl.Fliping)
             {
                 VirtualInputManager.Instance.MoveRight = false;
                 VirtualInputManager.Instance.MoveLeft = false;
-                VirtualInputManager.Instance.TurnBackByRight = false;
-                VirtualInputManager.Instance.TurnBackByLeft = false;
+                VirtualInputManager.Instance.MoveBackward = false;
+                if (characterControl.Fliping)
+                {
+                    return;
+                }
             }
-            else if (Input.GetAxisRaw("Horizontal") > 0)
+            if (Input.GetAxisRaw("Horizontal") > 0)
             {
                 if (characterControl.FacingRight)
+                {
                     VirtualInputManager.Instance.MoveRight = true;
+                }
+                else if (!characterControl.FacingRight && characterControl.ActiveAim)
+                {
+                    VirtualInputManager.Instance.MoveBackward = true;
+                }
                 else
-                    VirtualInputManager.Instance.TurnBackByLeft = true;
+                {
+                    VirtualInputManager.Instance.FlipToRight = true;
+                    characterControl.Fliping = true;
+                }
             }
-            else if (Input.GetAxisRaw("Horizontal") < 0)
+            if (Input.GetAxisRaw("Horizontal") < 0)
             {
                 if (!characterControl.FacingRight)
+                {
                     VirtualInputManager.Instance.MoveLeft = true;
+                }
+                else if (characterControl.FacingRight && characterControl.ActiveAim)
+                {
+                    VirtualInputManager.Instance.MoveBackward = true;
+                }
                 else
-                    VirtualInputManager.Instance.TurnBackByRight = true;
+                {
+                    VirtualInputManager.Instance.FlipToLeft = true;
+                    characterControl.Fliping = true;
+                }
             }
-            if (Input.GetKey(KeyCode.Space) && !characterControl.Turn)
-                VirtualInputManager.Instance.Jump = true;
-            else
-                VirtualInputManager.Instance.Jump = false;
+            VirtualInputManager.Instance.Jump = (Input.GetKey(KeyCode.Space) && !characterControl.Fliping);
+
         }
     }
 }
