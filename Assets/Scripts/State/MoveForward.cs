@@ -19,7 +19,6 @@ namespace kl
         public override void UpdateAbility(CharacterState characterState, Animator animator, AnimatorStateInfo stateInfo)
         {
             CharacterControl characterControl = characterState.GetCharacterControl(animator);
-            Debug.Log("Move..." + characterControl.MoveRight + "////" + characterControl.MoveLeft);
             if ((characterControl.MoveRight && characterControl.MoveLeft) || (!characterControl.MoveRight && !characterControl.MoveLeft))
             {
                 animator.SetBool(TransitionParameter.Move.ToString(), false);

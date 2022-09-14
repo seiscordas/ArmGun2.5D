@@ -150,7 +150,10 @@ namespace kl
     }
 }
 //TODO:
+//laser sistem alterando posição
 //colocar mira
+//colocar animação de correr ao apertar shift
+//melhorar transição de move para jump
 //corrigi raycast quando atira em movimento melhor trocar por raio laser com object
 //trocar animações de pulo para animação sem skin
 //agachar

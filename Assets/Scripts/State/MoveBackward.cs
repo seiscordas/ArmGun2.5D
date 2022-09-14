@@ -29,9 +29,8 @@ namespace kl
             }
             if (characterControl.MoveBackward)
             {
-                Debug.Log("MoveBackward..." + characterControl.MoveBackward);
                 characterControl.transform.Translate(Speed * SpeedGraph.Evaluate(stateInfo.normalizedTime) * Time.fixedDeltaTime * -Vector3.forward);
-
+                //TODO: CHECK BACK OU COLOCAR AS ESFERAS NAS COSTAS QUANDO TIVER ANDANDO DE COSTAS OU CRIAR NOVAS (ACHO MELHOR COLOCAR A EXISTENTES NAS COSTAS)
                 if (!CheckFront(characterControl))
                 {
                 }
