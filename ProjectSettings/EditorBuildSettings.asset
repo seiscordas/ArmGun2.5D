@@ -6,6 +6,6 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Game/Assets/Scenes/ArmGun2.5D.unity
+    path: Assets/_Game/Scenes/ArmGun2.5D.unity
     guid: e73cdabc9961ebb4fac5ee8dfe984916
   m_configObjects: {}
