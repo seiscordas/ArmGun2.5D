@@ -427,7 +427,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 257926733}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.86000013, y: 4.152, z: -10}
+  m_LocalPosition: {x: 0.8600003, y: 4.152, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1394,8 +1394,8 @@ MonoBehaviour:
   _crosshair: {fileID: 0}
   cursorMode: 0
   hotSpot: {x: 0, y: 0}
-  characterControl: {fileID: 0}
   _aim: {fileID: 934730498}
+  characterControl: {fileID: 0}
   _head: {fileID: 1422806697}
   _headClampUp: 26
   _headClampDown: -90
@@ -1405,6 +1405,7 @@ MonoBehaviour:
   _armGunClampDown: 0
   _gun: {fileID: 0}
   _gunOffset: 0
+  dinamicOffsetClamp: {x: 0, y: 0}
   _cam: {fileID: 0}
   debug: 
 --- !u!65 &898711248
@@ -3108,24 +3109,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1973a67e5cbc61a489cb7eff7a4e90a8, type: 3}
---- !u!1 &1170825608 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3239860561861481751, guid: 28fee7ba2eaebf24cad1c5799df4de1d, type: 3}
-  m_PrefabInstance: {fileID: 1188082874739921253}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1170825609
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1170825608}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 07cd274beb904d54c91b0377b9d9c49f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  characterControl: {fileID: 1346226835}
 --- !u!1 &1215196195
 GameObject:
   m_ObjectHideFlags: 0
@@ -3944,7 +3927,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1585999289}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.86000013, y: 4.152, z: -10}
+  m_LocalPosition: {x: 0.8600003, y: 4.152, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -4629,10 +4612,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1045681453183238912, guid: 28fee7ba2eaebf24cad1c5799df4de1d, type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
+    - target: {fileID: 1170825609, guid: 28fee7ba2eaebf24cad1c5799df4de1d, type: 3}
+      propertyPath: characterControl
+      value: 
+      objectReference: {fileID: 1346226835}
     - target: {fileID: 3239860561861481751, guid: 28fee7ba2eaebf24cad1c5799df4de1d, type: 3}
       propertyPath: m_Name
       value: KeyboardInput
@@ -4681,10 +4664,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6240327977129919120, guid: 28fee7ba2eaebf24cad1c5799df4de1d, type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 28fee7ba2eaebf24cad1c5799df4de1d, type: 3}
 --- !u!1001 &5659697306386517867
@@ -4694,16 +4673,9 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 2297360410427930731, guid: 74505cfec9c21214da941fef53379c3c, type: 3}
-      propertyPath: m_WarningMessage
-      value: "\nBinding warning: Some generic clip(s) animate transforms that are
-        already bound by a Humanoid avatar. These transforms can only be changed
-        by Humanoid clips.\n\tTransform 'mixamorig10:RightForeArm'\n\tTransform 'mixamorig10:RightShoulder'\n\tTransform
-        'mixamorig10:RightArm'\n\tTransform 'mixamorig10:RightHand'\n\tTransform
-        'mixamorig10:RightForeArm'\n\tTransform 'mixamorig10:RightShoulder'\n\tTransform
-        'mixamorig10:RightArm'\n\tTransform 'mixamorig10:RightHand'\n\tTransform
-        'mixamorig10:RightForeArm'\n\tTransform 'mixamorig10:RightShoulder'\n\tand
-        more ..."
+    - target: {fileID: 543450652353801606, guid: 74505cfec9c21214da941fef53379c3c, type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4776667081302587563, guid: 74505cfec9c21214da941fef53379c3c, type: 3}
       propertyPath: m_Name
@@ -4753,9 +4725,13 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5659697305569859690, guid: 74505cfec9c21214da941fef53379c3c, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
+    - target: {fileID: 5659697307356467234, guid: 74505cfec9c21214da941fef53379c3c, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5659697307356467247, guid: 74505cfec9c21214da941fef53379c3c, type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5659697307356467285, guid: 74505cfec9c21214da941fef53379c3c, type: 3}
       propertyPath: _cam

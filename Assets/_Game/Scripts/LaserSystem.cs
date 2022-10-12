@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 namespace kl
@@ -43,14 +44,13 @@ namespace kl
         {
             if (characterControl.ActiveAim)
             {
-                _shotSpawn.parent.transform.eulerAngles = new Vector3(0f, 0f, _shotSpawn.parent.transform.eulerAngles.z);
-                Debug.DrawRay(_shotSpawn.position, _aimTarget.position, Color.blue);
                 _debug = _shotSpawn.parent.transform.eulerAngles + "";
                 ShotSpawnLookAtAimTarget();
                 if (Input.GetMouseButtonDown(0))
                 {
                     StartCoroutine("ShotLaser");
                 }
+                Debug.DrawRay(_shotSpawn.position, _aimTarget.position, Color.blue);
             }
         }
 

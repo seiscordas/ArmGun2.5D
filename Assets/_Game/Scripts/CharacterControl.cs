@@ -45,7 +45,7 @@ namespace kl
 
         private void Awake()
         {
-            SetRagdollParts();
+            SetRagdollPartsColliderAsTrigger();
             SetColliderSpheres();
         }
 
@@ -60,16 +60,16 @@ namespace kl
         }
          */
 
-        private void SetRagdollParts()
+        private void SetRagdollPartsColliderAsTrigger()
         {
             Collider[] Colliders = GetComponentsInChildren<Collider>();
 
-            foreach (Collider c in Colliders)
+            foreach (Collider collider in Colliders)
             {
-                if (c.gameObject != this.gameObject)
+                if (collider.gameObject != this.gameObject)
                 {
-                    c.isTrigger = true;
-                    RagdollParts.Add(c);
+                    collider.isTrigger = true;
+                    RagdollParts.Add(collider);
                 }
             }
         }
@@ -81,10 +81,10 @@ namespace kl
             Animator.enabled = false;
             Animator.avatar = null;
             this.gameObject.GetComponent<BoxCollider>().enabled = false;
-            foreach (Collider c in RagdollParts)
+            foreach (Collider collider in RagdollParts)
             {
-                c.isTrigger = false;
-                c.attachedRigidbody.velocity = Vector3.zero;
+                collider.isTrigger = false;
+                collider.attachedRigidbody.velocity = Vector3.zero;
             }
         }
 
@@ -150,12 +150,14 @@ namespace kl
     }
 }
 //TODO:
-//laser sistem alterando posição
-//colocar mira
+//TODO: CHECK BACK OU COLOCAR AS ESFERAS NAS COSTAS QUANDO TIVER ANDANDO DE COSTAS OU CRIAR NOVAS (ACHO MELHOR COLOCAR A EXISTENTES NAS COSTAS)
+//tentar colocar outra camera para ficar uma como posição do mouse e outra para ficar em perspectiva
+//adicionar jetpack
+//corrigir pulo adicional quando aperta pra pular proximo do chão o player pula novamete
 //colocar animação de correr ao apertar shift
 //melhorar transição de move para jump
-//corrigi raycast quando atira em movimento melhor trocar por raio laser com object
+//corrigi raycast quando atira em movimento o raio fica parado no ar... talvez seja melhor trocar por raio laser com object
 //trocar animações de pulo para animação sem skin
 //agachar
-//CORRIGIR RESOLUÇÃO DO GAME PLAY
-//Procurar animações melhores
+//adicionar drone no lugar da bolas
+//colocar em cubos 1x1 para ficar dentro da mira e ser atingido

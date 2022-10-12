@@ -1,17 +1,18 @@
+using System.Collections;
 using UnityEngine;
 
 namespace kl
 {
     public class AimSystem : MonoBehaviour
     {
+        [Header("Crosshair")]
         [SerializeField] private Texture2D _crosshair;
         [SerializeField] private CursorMode cursorMode = CursorMode.Auto;
         [SerializeField] private Vector2 hotSpot = Vector2.zero;
+        [SerializeField] private Transform _aim;
 
         [SerializeField] private CharacterControl characterControl;
-        [SerializeField] private Transform _aim;
-        public Transform Aim { get => _aim; }
-        [SerializeField] static bool _activeAim = false;
+        [SerializeField] private static bool _activeAim = false;
         [Header("Head Settings")]
         [SerializeField] private Transform _head;
         [SerializeField] private float _headClampUp;
@@ -24,36 +25,49 @@ namespace kl
         [Header("Gun Settings")]
         [SerializeField] private Transform _gun;
         [SerializeField] private float _gunOffset;
+        [Header("General Settings")]
+        [SerializeField] private Vector2 dinamicOffsetClamp;
 
         [SerializeField] private Camera _cam;
         private float _aimPositionX;
         private float dinamicOffset;
+        public Transform Aim { get => _aim; }
+
+        private LaserSystem laserSystem;
+        
         private void Start()
         {
             Cursor.SetCursor(_crosshair, hotSpot, cursorMode);
             characterControl.AimPosition = _aim;
             dinamicOffset = _armGunOffset;
             characterControl.ActiveAim = false;
+            laserSystem = GetComponent<LaserSystem>();
         }
         void Update()
         {
-            Debug.Log(_gun.eulerAngles);
             if (Input.GetButtonDown("Fire2") && !characterControl.Fliping)
             {
-                _activeAim = !_activeAim;
-                _aim.gameObject.SetActive(_activeAim);
-                characterControl.ActiveAim = _activeAim;
-                VirtualInputManager.Instance.ActiveAim = _activeAim;
-                //Cursor.visible = !_activeAim;
+                ToggleActiveAimMode();
             }
             if (_activeAim)
             {
-                _gun.transform.eulerAngles = new Vector3(0f, 0f, _gun.transform.eulerAngles.z);
-                AimGun();
-                ArmGunAimFollow();
-                GunAimFollow();
-                HeadAimFollow();
+                DoAim();
             }
+            StartFlipOnAimState();
+        }
+
+        private void ToggleActiveAimMode()
+        {
+            _activeAim = !_activeAim;
+            _aim.gameObject.SetActive(_activeAim);
+            characterControl.ActiveAim = _activeAim;
+            VirtualInputManager.Instance.ActiveAim = _activeAim;
+            laserSystem.enabled = _activeAim;
+            //Cursor.visible = !_activeAim;
+        }
+
+        private void StartFlipOnAimState()
+        {
             _aimPositionX = _aim.position.x - transform.position.x;
             if (_activeAim && _aimPositionX < 0 && characterControl.FacingRight)
             {
@@ -66,6 +80,15 @@ namespace kl
                 characterControl.Fliping = true;
             }
         }
+
+        private void DoAim()
+        {
+                AimGun();
+                ArmGunAimFollow();
+                GunAimFollow();
+                HeadAimFollow();
+        }
+
         private void ArmGunAimFollow()
         {
             float angle = Angle(_aim.position, _armGun.position) - _armGunOffset;
@@ -96,7 +119,7 @@ namespace kl
 
         private void AimGun()
         {
-            //TODO: TIRAR NFREEZE ? S?MENTE PARA DEBUG
+            //TODO: TIRAR NFREEZE ? SOMENTE PARA DEBUG
             bool nfreeze = true;
             if (Input.GetKey(KeyCode.F))
                 nfreeze = !nfreeze;
