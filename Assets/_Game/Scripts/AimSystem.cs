@@ -28,7 +28,7 @@ namespace kl
         [Header("General Settings")]
         [SerializeField] private Vector2 dinamicOffsetClamp;
 
-        [SerializeField] private Camera _cam;
+        [SerializeField] private Camera aimCamera;
         private float _aimPositionX;
         private float dinamicOffset;
         public Transform Aim { get => _aim; }
@@ -139,7 +139,7 @@ namespace kl
         {
             get
             {
-                return _cam.ScreenToWorldPoint(Input.mousePosition);
+                return aimCamera.ScreenToWorldPoint(Input.mousePosition);
             }
         }
 

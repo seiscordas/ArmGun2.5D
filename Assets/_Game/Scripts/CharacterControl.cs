@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Drawing;
 using UnityEngine;
 
 namespace kl
@@ -30,6 +31,8 @@ namespace kl
         public List<GameObject> FrontSpheres = new();
         public List<Collider> RagdollParts = new();
 
+        private BoxCollider boxCollider;
+
         public Rigidbody Rigidbody
         {
             get
@@ -42,9 +45,9 @@ namespace kl
             }
         }
 
-
         private void Awake()
         {
+            boxCollider = GetComponent<BoxCollider>();
             SetRagdollPartsColliderAsTrigger();
             SetColliderSpheres();
         }
@@ -80,7 +83,8 @@ namespace kl
             Rigidbody.velocity = Vector3.zero;
             Animator.enabled = false;
             Animator.avatar = null;
-            this.gameObject.GetComponent<BoxCollider>().enabled = false;
+            //this.gameObject.GetComponent<BoxCollider>().enabled = false;
+            boxCollider.enabled = false;
             foreach (Collider collider in RagdollParts)
             {
                 collider.isTrigger = false;
@@ -90,7 +94,7 @@ namespace kl
 
         private void SetColliderSpheres()
         {
-            BoxCollider boxCollider = GetComponent<BoxCollider>();
+            //BoxCollider boxCollider = GetComponent<BoxCollider>();
 
             float bottom = boxCollider.bounds.center.y - boxCollider.bounds.extents.y;
             float top = boxCollider.bounds.center.y + boxCollider.bounds.extents.y;
@@ -127,8 +131,27 @@ namespace kl
             GameObject obj = Instantiate(ColliderEdgePrefab, position, Quaternion.identity, parent);
             return obj;
         }
+
+        public void UpdateBoxColliserSize(Vector3 toSize, float speed)
+        {
+            if (Vector3.SqrMagnitude(boxCollider.size - toSize) > 0.01f)
+            {
+                boxCollider.size = Vector3.Lerp(boxCollider.size, toSize, Time.deltaTime * speed);
+            }
+        }
+
+        public void UpdateBoxColliderCenter(Vector3 toCenter, float speed)
+        {
+            print(Vector3.SqrMagnitude(boxCollider.center - toCenter));
+            if (Vector3.SqrMagnitude(boxCollider.center - toCenter) > 0.01f)
+            {
+                boxCollider.center = Vector3.Lerp(boxCollider.center, toCenter, Time.deltaTime * speed);
+            }
+        }
+
         private void FixedUpdate()
         {
+            //TODO: extratir para metodo
             if (Rigidbody.velocity.y < 0f)
             {
                 Rigidbody.velocity += Vector3.down * GravityMutiplier;

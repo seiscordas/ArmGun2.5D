@@ -135,9 +135,3 @@ namespace kl
         }
     }
 }
-//TODO:
-//agachar
-//andar para traz quando estiver mirando
-//Procurar animações melhores
-//Colocar clamp na mira com o braço pq fica estranho quando gira de um lada para o outro se a mira estiver muito proximo a cabeça
-//CORRIGIR RESOLUÇÃO DO GAME PLAY
