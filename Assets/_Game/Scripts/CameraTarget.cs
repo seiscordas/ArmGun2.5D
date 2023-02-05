@@ -17,12 +17,14 @@ namespace kl
 
         private void FixedUpdate()
         {
-            float currentOffsetZ = Mathf.Lerp(cameraTarget.localPosition.z, cameraTargetOffsetZ, Time.fixedDeltaTime * cameraTargetFlipSpeed);
-            if (characterControl.MoveLeft || characterControl.MoveBackward)
+            if (characterControl.Fliping)
             {
-                currentOffsetZ += Time.fixedDeltaTime * characterSpeedInfluence;
-                cameraTarget.localPosition = new Vector3(cameraTarget.localPosition.x, cameraTarget.localPosition.y, currentOffsetZ);
+                cameraTarget.localPosition = Vector3.Lerp(Vector3.up, cameraTarget.localPosition, Time.fixedDeltaTime * cameraTargetFlipSpeed);
+                return;
             }
+            float currentOffsetZ = Mathf.Lerp(cameraTarget.localPosition.z, cameraTargetOffsetZ, Time.fixedDeltaTime * cameraTargetFlipSpeed);
+            currentOffsetZ += Time.fixedDeltaTime * characterSpeedInfluence;
+            cameraTarget.localPosition = new Vector3(cameraTarget.localPosition.x, cameraTarget.localPosition.y, currentOffsetZ);
         }
     }
 }

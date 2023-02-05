@@ -45,6 +45,7 @@ namespace kl
         }
         void Update()
         {
+            AimCameraPayerFollow();
             if (Input.GetButtonDown("Fire2") && !characterControl.Fliping)
             {
                 ToggleActiveAimMode();
@@ -98,13 +99,14 @@ namespace kl
             dinamicAngleOffset = Mathf.Clamp(dinamicAngleOffset, _armGunClampDown, dinamicAngleOffset);
 
             _armGun.eulerAngles = new Vector3(0f, 0f, characterControl.FacingRight ? dinamicAngleOffset : -dinamicAngleOffset);
-            debug = dinamicAngleOffset + "//" + dinamicOffset;
         }
+
         private void GunAimFollow()
         {
             float angle = Angle(_aim.position, _gun.position) - _gunOffset;
             _gun.eulerAngles = new Vector3(0f, 0f, characterControl.FacingRight ? angle : -angle);
         }
+
         private float Angle(Vector3 point1, Vector3 point2)
         {
             Vector3 _points = point1 - point2;
@@ -115,26 +117,14 @@ namespace kl
             }
             return Mathf.Atan2(_points.y, _points.x) * Mathf.Rad2Deg;
         }
-        [SerializeField] private string debug;
 
-        private void AimGun()
-        {
-            //TODO: TIRAR NFREEZE ? SOMENTE PARA DEBUG
-            bool nfreeze = true;
-            if (Input.GetKey(KeyCode.F))
-                nfreeze = !nfreeze;
-            if (!nfreeze)
-            {
-                //_aim.position = new Vector3(MousePosition.x, MousePosition.y, characterControl.FacingRight ? -0.2f : 0.2f);
-            }
-            _aim.position = new Vector3(MousePosition.x, MousePosition.y, characterControl.FacingRight ? -0.2f : 0.2f);
-        }
         private void HeadAimFollow()
         {
             float angle = Angle(_aim.position, _head.transform.position) - _headOffset;
             angle = Mathf.Clamp(angle, _headClampDown, _headClampUp);
             _head.eulerAngles = new Vector3(-angle, _head.transform.eulerAngles.y, _head.transform.eulerAngles.z);
         }
+
         private Vector3 MousePosition
         {
             get
@@ -142,6 +132,10 @@ namespace kl
                 return aimCamera.ScreenToWorldPoint(Input.mousePosition);
             }
         }
+
+        private void AimGun() => _aim.position = new Vector3(MousePosition.x, MousePosition.y, characterControl.FacingRight ? -0.2f : 0.2f);
+
+        private void AimCameraPayerFollow() => aimCamera.transform.position = characterControl.transform.position;
 
         public Texture2D Crosshair { get => _crosshair; set => _crosshair = value; }
     }
