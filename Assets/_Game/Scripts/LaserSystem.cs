@@ -17,7 +17,6 @@ namespace kl
         private Vector3 _lightPosition;
         [SerializeField] private LineRenderer _lineRenderer;
         private Player3DController _player;
-        //private AimSystem aimSystem;
 
         public Player3DController Player { get => _player; set => _player = value; }
 
@@ -25,19 +24,6 @@ namespace kl
         {
             _lineRenderer.enabled = false;
             _lightPosition = new Vector3(0, endWidth, 0);
-            //aimSystem = _player.gameObject.GetComponent<AimSystem>();
-            //_lightHit = new GameObject();
-            //_lightHit.AddComponent<Light>();
-            //_lightHit.GetComponent<Light>().intensity = _intensity;
-            //_lightHit.GetComponent<Light>().range = endWidth * 2;
-            //_lightHit.GetComponent<Light>().color = _startColor;
-            //_lineRenderer = gameObject.AddComponent<LineRenderer>();
-            //_lineRenderer.material = new Material(Shader.Find("Legacy Shaders/Particles/Additive"));
-            //_lineRenderer.startColor = _startColor;
-            //_lineRenderer.endColor = _endColor;
-            //_lineRenderer.startWidth = startWidth;
-            //_lineRenderer.endWidth = endWidth;
-            //_lineRenderer.positionCount = 2;
         }
         public string _debug;
         void Update()

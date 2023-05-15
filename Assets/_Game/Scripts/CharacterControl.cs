@@ -172,15 +172,20 @@ namespace kl
         Grounded
     }
 }
-//TODO:
-//TODO: CHECK BACK OU COLOCAR AS ESFERAS NAS COSTAS QUANDO TIVER ANDANDO DE COSTAS OU CRIAR NOVAS (ACHO MELHOR COLOCAR A EXISTENTES NAS COSTAS)
-//tentar colocar outra camera para ficar uma como posição do mouse e outra para ficar em perspectiva
-//adicionar jetpack
+//TODO//
+
+/// Correções ///
+//CHECK BACK OU COLOCAR AS ESFERAS NAS COSTAS QUANDO TIVER ANDANDO DE COSTAS OU CRIAR NOVAS (ACHO MELHOR COLOCAR A EXISTENTES NAS COSTAS)
 //corrigir pulo adicional quando aperta pra pular proximo do chão o player pula novamete
-//colocar animação de correr ao apertar shift
-//melhorar transição de move para jump
 //corrigi raycast quando atira em movimento o raio fica parado no ar... talvez seja melhor trocar por raio laser com object
+
+/// Animações ///
+//melhorar transição de move para jump
+//melhorar transição de jump para move (player fica um tempo parado)
 //trocar animações de pulo para animação sem skin
-//agachar
-//adicionar drone no lugar da bolas
-//colocar em cubos 1x1 para ficar dentro da mira e ser atingido
+//correr com shift
+//agachar com control
+//adicionar jetpack quando segurar a barra de espaço
+
+/// Evolução de senario ///
+//adicionar drone no lugar da bolas e colocar em cubos 1x1 para ficar dentro da mira e ser atingido
